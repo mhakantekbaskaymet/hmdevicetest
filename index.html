@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HM Device Test | Test Your Keyboard, Camera, Microphone, and Speaker</title>
+    <meta
+      name="description"
+      content="Test your device hardware including keyboard, camera, microphone, and speaker with this interactive testing tool."
+    />
+    <link rel="icon" href="img/favicon.png" />
+    <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <!-- Open Graph (Facebook) Metadata -->
+    <meta
+      property="og:title"
+      content="HM Device Test | Test Your Keyboard, Camera, Microphone, and Speaker"
+    />
+    <meta
+      property="og:description"
+      content="Test your device hardware including keyboard, camera, microphone, and speaker with this interactive testing tool."
+    />
+    <meta
+      property="og:url"
+      content="https://mostafa-abbasi.github.io/KeyboardTester/"
+    />
+    <meta
+      property="og:image"
+      content="https://mostafa-abbasi.github.io/KeyboardTester/img/favicon.png"
+    />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card Metadata -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="HM Device Test | Test Your Keyboard, Camera, Microphone, and Speaker"
+    />
+    <meta
+      name="twitter:description"
+      content="Test your device hardware including keyboard, camera, microphone, and speaker with this interactive testing tool."
+    />
+    <meta
+      name="twitter:image"
+      content="https://mostafa-abbasi.github.io/KeyboardTester/img/favicon.png"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/segoe-fonts@1.0.1/segoe-fonts.min.css"
+    />
+    <link rel="stylesheet" href="css/general.css" />
+    <link rel="stylesheet" href="css/themes.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/queries.css" />
+    <script defer src="script.js"></script>
+    <style>
+      .test-area {
+        margin: 2rem auto;
+        padding: 2rem;
+        max-width: 800px;
+        background-color: var(--color-primary-light);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      
+      .test-button {
+        padding: 0.8rem 1.6rem;
+        margin: 0.5rem;
+        border: none;
+        border-radius: 5px;
+        background-color: var(--color-primary);
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      
+      .test-button:hover {
+        background-color: var(--color-primary-dark);
+      }
+      
+      .test-area h2 {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        color: var(--color-primary-dark);
+      }
+      
+      .test-output-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        text-align: center;
+      }
+      
+      /* Microphone Visualization Styles */
+      .mic-level-text {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .visualizer-container {
+        width: 100%;
+        max-width: 500px;
+        height: 200px;
+        margin: 1rem 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .mic-visualizer {
+        width: 100%;
+        height: 150px;
+        background-color: rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 10px;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .mic-bar-container {
+        display: flex;
+        height: 100%;
+        align-items: flex-end;
+        justify-content: space-between;
+      }
+      
+      .mic-bar {
+        width: 8px;
+        background-color: var(--color-primary);
+        border-radius: 4px;
+        transition: height 0.1s ease;
+      }
+      
+      .level-indicator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 1rem 0;
+        font-size: 1.2rem;
+      }
+      
+      .level-label {
+        margin-right: 0.5rem;
+      }
+      
+      .level-value {
+        font-weight: bold;
+        color: var(--color-primary);
+      }
+      
+      .stop-button {
+        background-color: #e74c3c;
+        margin-top: 1.5rem;
+      }
+      
+      .stop-button:hover {
+        background-color: #c0392b;
+      }
+      
+      .restart-button {
+        background-color: #27ae60;
+        margin-top: 1.5rem;
+      }
+      
+      .restart-button:hover {
+        background-color: #2ecc71;
+      }
+      
+      /* Speaker Test Styles */
+      .speaker-info {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .sound-controls {
+        width: 100%;
+        max-width: 500px;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      
+      .volume-control {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      
+      .volume-slider {
+        flex-grow: 1;
+        height: 8px;
+        -webkit-appearance: none;
+        appearance: none;
+        background: rgba(0, 0, 0, 0.1);
+        outline: none;
+        border-radius: 4px;
+      }
+      
+      .volume-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--color-primary);
+        cursor: pointer;
+      }
+      
+      .volume-slider::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--color-primary);
+        cursor: pointer;
+      }
+      
+      .channel-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .channel-button {
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+      
+      .channel-icon {
+        display: inline-block;
+        font-weight: bold;
+      }
+      
+      .channel-button.active {
+        background-color: var(--color-primary-dark);
+      }
+      
+      .playback-indicator {
+        margin-top: 1rem;
+      }
+      
+      .playing-status {
+        text-align: center;
+        margin-bottom: 0.8rem;
+        font-weight: bold;
+      }
+      
+      .channel-visualizer {
+        height: 100px;
+        background-color: rgba(0, 0, 0, 0.05);
+        border-radius: 8px;
+        padding: 15px;
+        overflow: hidden;
+      }
+      
+      .speaker-channels {
+        display: flex;
+        justify-content: space-between;
+        height: 100%;
+        gap: 2rem;
+      }
+      
+      .speaker-channel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .channel-label {
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+      }
+      
+      .channel-bar {
+        width: 100%;
+        height: 0;
+        background-color: var(--color-primary);
+        transition: height 0.2s ease;
+        border-radius: 4px;
+      }
+      
+      .channel-bar.active {
+        height: 50px;
+        animation: pulse 1s infinite alternate;
+      }
+      
+      @keyframes pulse {
+        0% {
+          height: 30px;
+          background-color: var(--color-primary-light);
+        }
+        100% {
+          height: 60px;
+          background-color: var(--color-primary);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <section class="intro">
+        <h1 class="heading-primary title center-text">
+          <span>HM Device Test</span>
+        </h1>
+        <p class="paragraph description center-text">
+          This interactive tool is designed to help users test and troubleshoot various device components including keyboard, camera, microphone, and speaker
+        </p>
+        <!-- New buttons for testing camera, microphone, and speaker -->
+        <div class="test-buttons center-text">
+          <button class="test-button" onclick="testKeyboard()">Test Keyboard</button>
+          <button class="test-button" onclick="testCamera()">Test Camera</button>
+          <button class="test-button" onclick="testMicrophone()">Test Microphone</button>
+          <button class="test-button" onclick="testSpeaker()">Test Speaker</button>
+        </div>
+      </section>
+    </header>
+
+    <main>
+      <div class="theme-and-layout">
+        <div></div>
+        <div class="slider-container">
+          <output class="slider-value">Full</output>
+          <input
+            type="range"
+            min="1"
+            max="3"
+            value="1"
+            class="slider"
+            id="layoutSlider"
+          />
+        </div>
+
+        <section class="theme-section">
+          <div class="retro" aria-label="retro theme option">
+            <div class="theme-color"></div>
+            <div class="theme-color"></div>
+            <div class="theme-color"></div>
+            <div class="theme-color"></div>
+          </div>
+          <div class="navy-blue" aria-label="navy-blue theme option">
+            <div class="theme-color"></div>
+            <div class="theme-color"></div>
+            <div class="theme-color"></div>
+            <div class="theme-color"></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Placeholders for device tests -->
+      <div id="cameraTest" class="test-area" style="display: none;">
+        <h2>Camera Test</h2>
+        <div id="cameraOutput" class="test-output-container">
+          <!-- Video will be added here by JavaScript -->
+        </div>
+        <div style="text-align: center; margin-top: 1.5rem;">
+          <button id="stopCameraBtn" class="test-button stop-button">Stop Camera Test</button>
+        </div>
+      </div>
+
+      <div id="microphoneTest" class="test-area" style="display: none;">
+        <h2>Microphone Test</h2>
+        <div id="microphoneOutput" class="test-output-container">
+          <div class="mic-level-text">Speak into your microphone...</div>
+          <div class="visualizer-container">
+            <div class="mic-visualizer">
+              <div class="mic-bar-container"></div>
+            </div>
+          </div>
+          <div class="level-indicator">
+            <div class="level-label">Microphone Level:</div>
+            <div class="level-value">0</div>
+          </div>
+          <button id="stopMicButton" class="test-button stop-button">Stop Mic Test</button>
+        </div>
+      </div>
+
+      <div id="speakerTest" class="test-area" style="display: none;">
+        <h2>Speaker Test</h2>
+        <div id="speakerOutput" class="test-output-container">
+          <p class="speaker-info">Test your speakers by playing audio in different channels</p>
+          
+          <div class="sound-controls">
+            <div class="volume-control">
+              <label for="volumeSlider">Volume:</label>
+              <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.5" class="volume-slider">
+              <span id="volumeValue">50%</span>
+            </div>
+            
+            <div class="channel-buttons">
+              <button id="leftSpeakerBtn" class="test-button channel-button">
+                <span class="channel-icon">L</span> Left Speaker
+              </button>
+              <button id="rightSpeakerBtn" class="test-button channel-button">
+                <span class="channel-icon">R</span> Right Speaker
+              </button>
+              <button id="bothSpeakersBtn" class="test-button channel-button">
+                <span class="channel-icon">L+R</span> Both Speakers
+              </button>
+            </div>
+            
+            <div class="playback-indicator">
+              <div class="playing-status">
+                <span id="playingStatus">Not playing</span>
+              </div>
+              <div class="channel-visualizer">
+                <div class="speaker-channels">
+                  <div class="speaker-channel left-channel">
+                    <div class="channel-label">L</div>
+                    <div class="channel-bar"></div>
+                  </div>
+                  <div class="speaker-channel right-channel">
+                    <div class="channel-label">R</div>
+                    <div class="channel-bar"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <button id="stopSpeakerBtn" class="test-button stop-button" style="display: none;">Stop Audio</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="keyboard full-size">
+        <!-- contains "ESC" & Function (F1-F12) -->
+        <section class="function region">
+          <div class="key escape">ESC</div>
+          <div class="empty-space-between-keys" aria-hidden="true"></div>
+          <div class="key f1">F1</div>
+          <div class="key f2">F2</div>
+          <div class="key f3">F3</div>
+          <div class="key f4">F4</div>
+          <div class="empty-space-between-keys" aria-hidden="true"></div>
+          <div class="key f5">F5</div>
+          <div class="key f6">F6</div>
+          <div class="key f7">F7</div>
+          <div class="key f8">F8</div>
+          <div class="empty-space-between-keys" aria-hidden="true"></div>
+          <div class="key f9">F9</div>
+          <div class="key f10">F10</div>
+          <div class="key f11">F11</div>
+          <div class="key f12">F12</div>
+        </section>
+
+        <!-- contains Top-Located Control (Prt Sc|Scr lck|Pause) keys -->
+        <section class="system-control region">
+          <div class="key printscreen key--accent-color">Prt Sc</div>
+          <div class="key scrolllock key--accent-color">Scr Lk</div>
+          <div class="key pause key--accent-color">Pause</div>
+        </section>
+
+        <!-- contains Modifier/Control (Ctrl|Alt|etc.) & Alpha (A-Z) keys -->
+        <section class="typewriter region">
+          <!-- number row (`, 1, 2, etc.) -->
+          <div class="first-row">
+            <div class="key backquote key--sublegend key--accent-color">
+              <span>~</span> <span>`</span>
+            </div>
+            <div class="key digit1">1</div>
+            <div class="key digit2">2</div>
+            <div class="key digit3">3</div>
+            <div class="key digit4">4</div>
+            <div class="key digit5">5</div>
+            <div class="key digit6">6</div>
+            <div class="key digit7">7</div>
+            <div class="key digit8">8</div>
+            <div class="key digit9">9</div>
+            <div class="key digit0">0</div>
+            <div class="key minus key--sublegend">
+              <span>&minus;</span> <span>&dash;</span>
+            </div>
+            <div class="key equal key--sublegend">
+              <span>&plus;</span><span>&equals;</span>
+            </div>
+            <div class="key backspace key--accent-color">Backspace</div>
+          </div>
+
+          <!-- qwerty row (tab, \, q, w, etc.) -->
+          <div class="second-row">
+            <div class="key tab key--accent-color">Tab</div>
+            <div class="key keyq">Q</div>
+            <div class="key keyw">W</div>
+            <div class="key keye">E</div>
+            <div class="key keyr">R</div>
+            <div class="key keyt">T</div>
+            <div class="key keyy">Y</div>
+            <div class="key keyu">U</div>
+            <div class="key keyi">I</div>
+            <div class="key keyo">O</div>
+            <div class="key keyp">P</div>
+            <div class="key bracketleft key--sublegend">
+              <span>&lbrace;</span> <span>&lbrack;</span>
+            </div>
+            <div class="key bracketright key--sublegend">
+              <span>&rbrace;</span> <span>&rbrack;</span>
+            </div>
+            <div class="key backslash key--sublegend key--accent-color">
+              <span>&vert;</span><span>&Backslash;</span>
+            </div>
+          </div>
+
+          <!-- asdfg row (caps, enter, a, s, etc.) -->
+          <div class="third-row">
+            <div class="key capslock key--accent-color">Caps</div>
+            <div class="key keya">A</div>
+            <div class="key keys">S</div>
+            <div class="key keyd">D</div>
+            <div class="key keyf">F</div>
+            <div class="key keyg">G</div>
+            <div class="key keyh">H</div>
+            <div class="key keyj">J</div>
+            <div class="key keyk">K</div>
+            <div class="key keyl">L</div>
+            <div class="key semicolon key--sublegend">
+              <span>&colon;</span> <span>&semi;</span>
+            </div>
+            <div class="key quote key--sublegend">
+              <span>&quot;</span> <span>&apos;</span>
+            </div>
+            <div class="key enter key--accent-color">
+              <span>&LongLeftArrow;</span>
+            </div>
+          </div>
+
+          <!-- zxcvb row (left and right shift, <, >, ?, etc.) -->
+          <div class="fourth-row">
+            <div class="key shiftleft key--accent-color">Shift</div>
+            <div class="key keyz">Z</div>
+            <div class="key keyx">X</div>
+            <div class="key keyc">C</div>
+            <div class="key keyv">V</div>
+            <div class="key keyb">B</div>
+            <div class="key keyn">N</div>
+            <div class="key keym">M</div>
+            <div class="key comma key--sublegend">
+              <span>&lt;</span> <span>&comma;</span>
+            </div>
+            <div class="key period key--sublegend">
+              <span>&gt;</span> <span>&period;</span>
+            </div>
+            <div class="key slash key--sublegend">
+              <span>&quest;</span> <span>&sol;</span>
+            </div>
+            <div class="key shiftright key--accent-color">Shift</div>
+          </div>
+
+          <!-- bottom row (ctrl, fn, win, alt, space, etc.) -->
+          <div class="fifth-row">
+            <div class="key controlleft key--accent-color">Ctrl</div>
+            <!-- Added OSLeft for firefox support -->
+            <div
+              class="key metaleft osleft key--accent-color"
+              aria-label="Left Windows key"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 4875 4875"
+                aria-label="Left Windows key icon"
+              >
+                <path
+                  d="M0 0h2311v2310H0zm2564 0h2311v2310H2564zM0 2564h2311v2311H0zm2564 0h2311v2311H2564"
+                />
+              </svg>
+            </div>
+            <div class="key altleft key--accent-color">Alt</div>
+            <div class="key space key--accent-color" aria-label="Space">
+              <span>&UnderBar;&UnderBar;&UnderBar;&UnderBar;</span>
+            </div>
+            <div class="key altright key--accent-color">Alt</div>
+            <!-- Added OSRight for firefox support -->
+            <div
+              class="key metaright osright key--accent-color"
+              aria-label="Right Windows key"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 4875 4875"
+                aria-label="Right Windows key icon"
+              >
+                <path
+                  d="M0 0h2311v2310H0zm2564 0h2311v2310H2564zM0 2564h2311v2311H0zm2564 0h2311v2311H2564"
+                />
+              </svg>
+            </div>
+            <div
+              class="key contextmenu key--accent-color"
+              aria-label="Context Menu key"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 100 100"
+                aria-label="Context Menu key icon"
+              >
+                <rect
+                  x="10"
+                  y="10"
+                  width="80"
+                  height="80"
+                  rx="2"
+                  ry="2"
+                  stroke-width="7"
+                />
+                <rect
+                  x="25"
+                  y="30"
+                  width="50"
+                  height="4.5"
+                  rx="2"
+                  ry="2"
+                  stroke-width="4.5"
+                />
+                <rect
+                  x="25"
+                  y="47.5"
+                  width="50"
+                  height="4.5"
+                  rx="2"
+                  ry="2"
+                  stroke-width="4.5"
+                />
+                <rect
+                  x="25"
+                  y="65"
+                  width="50"
+                  height="4.5"
+                  rx="2"
+                  ry="2"
+                  stroke-width="4.5"
+                />
+              </svg>
+            </div>
+            <div class="key controlright key--accent-color">Ctrl</div>
+          </div>
+        </section>
+
+        <!-- contains Navigation (PgUp|PgDn|etc.) & Arrow keys -->
+        <section class="navigation region">
+          <div class="key insert key--accent-color">Insert</div>
+          <div class="key home key--accent-color">Home</div>
+          <div class="key pageup key--accent-color">Pg Up</div>
+          <div class="key delete key--accent-color">Delete</div>
+          <div class="key end key--accent-color">End</div>
+          <div class="key pagedown key--accent-color">Pg Dn</div>
+          <div class="key arrowup" aria-label="Up Arrow key">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              enable-background="new 0 0 32 32"
+              viewBox="0 0 32 32"
+              aria-label="Up Arrow"
+            >
+              <path
+                d="M18.221,7.206l9.585,9.585c0.879,0.879,0.879,2.317,0,3.195l-0.8,0.801c-0.877,0.878-2.316,0.878-3.194,0  l-7.315-7.315l-7.315,7.315c-0.878,0.878-2.317,0.878-3.194,0l-0.8-0.801c-0.879-0.878-0.879-2.316,0-3.195l9.587-9.585  c0.471-0.472,1.103-0.682,1.723-0.647C17.115,6.524,17.748,6.734,18.221,7.206z"
+              />
+            </svg>
+          </div>
+          <div class="key arrowleft" aria-label="Left Arrow key">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              enable-background="new 0 0 32 32"
+              viewBox="0 0 32 32"
+              aria-label="Left Arrow"
+            >
+              <path
+                d="M7.701,14.276l9.586-9.585c0.879-0.878,2.317-0.878,3.195,0l0.801,0.8c0.878,0.877,0.878,2.316,0,3.194  L13.968,16l7.315,7.315c0.878,0.878,0.878,2.317,0,3.194l-0.801,0.8c-0.878,0.879-2.316,0.879-3.195,0l-9.586-9.587  C7.229,17.252,7.02,16.62,7.054,16C7.02,15.38,7.229,14.748,7.701,14.276z"
+              />
+            </svg>
+          </div>
+          <div class="key arrowdown" aria-label="Down Arrow key">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              enable-background="new 0 0 32 32"
+              viewBox="0 0 32 32"
+              aria-label="Down Arrow"
+            >
+              <path
+                d="M14.77,23.795L5.185,14.21c-0.879-0.879-0.879-2.317,0-3.195l0.8-0.801c0.877-0.878,2.316-0.878,3.194,0  l7.315,7.315l7.316-7.315c0.878-0.878,2.317-0.878,3.194,0l0.8,0.801c0.879,0.878,0.879,2.316,0,3.195l-9.587,9.585  c-0.471,0.472-1.104,0.682-1.723,0.647C15.875,24.477,15.243,24.267,14.77,23.795z"
+              />
+            </svg>
+          </div>
+          <div class="key arrowright" aria-label="Right Arrow key">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              enable-background="new 0 0 32 32"
+              viewBox="0 0 32 32"
+              aria-label="Right Arrow"
+            >
+              <path
+                d="M24.291,14.276L14.705,4.69c-0.878-0.878-2.317-0.878-3.195,0l-0.8,0.8c-0.878,0.877-0.878,2.316,0,3.194  L18.024,16l-7.315,7.315c-0.878,0.878-0.878,2.317,0,3.194l0.8,0.8c0.878,0.879,2.317,0.879,3.195,0l9.586-9.587  c0.472-0.471,0.682-1.103,0.647-1.723C24.973,15.38,24.763,14.748,24.291,14.276z"
+              />
+            </svg>
+          </div>
+        </section>
+
+        <!-- contains Numpad Keys -->
+        <section class="numpad region">
+          <div class="key numlock">NumLk</div>
+          <div class="key numpaddivide">/</div>
+          <div class="key numpadmultiply">&times;</div>
+          <div class="key numpadsubtract">&minus;</div>
+          <div class="key numpad7">7</div>
+          <div class="key numpad8">8</div>
+          <div class="key numpad9">9</div>
+          <div class="key numpadadd">&plus;</div>
+          <div class="key numpad4">4</div>
+          <div class="key numpad5">5</div>
+          <div class="key numpad6">6</div>
+          <div class="key numpad1">1</div>
+          <div class="key numpad2">2</div>
+          <div class="key numpad3">3</div>
+          <div class="key numpadenter">Enter</div>
+          <div class="key numpad0">0</div>
+          <div class="key numpaddecimal">&middot;</div>
+        </section>
+      </div>
+    </main>
+    <footer class="footer">
+    </footer>
+  </body>
+</html>
