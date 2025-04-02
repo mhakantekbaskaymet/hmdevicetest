@@ -1,4 +1,4 @@
-## Online Keyboard Tester ⌨️
+## Online Device Tester ⌨️
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Mostafa-Abbasi/KeyboardTester/main/img/demo.gif" alt="App Demo GIF">
@@ -8,12 +8,12 @@
 
 ## Overview 🌐
 
-Welcome to the Online Keyboard Tester! This interactive web application is designed to help you ensure that every key on your keyboard is functioning perfectly. Whether you're a programmer, gamer, or just a keyboard enthusiast, it's essential to have confidence in your keyboard's reliability.
+Welcome to the Online Device Tester! This interactive web application is designed to help you ensure that every key on your keyboard is functioning perfectly. Whether you're a programmer, gamer, or just a keyboard enthusiast, it's essential to have confidence in your keyboard's reliability.
 <br/><br/>
 
 ## How to Use 🚀
 
-Just head over to **[Online Keyboard Tester Website](https://mostafa-abbasi.github.io/KeyboardTester)** and start pressing those keys! It will instantly respond to your every keystroke.
+Just head over to **[Online Device ard Tester Website](https://mostafa-abbasi.github.io/KeyboardTester)** and start pressing those keys! It will instantly respond to your every keystroke.
 <br/><br/>
 
 ## Features 🌟
@@ -50,7 +50,7 @@ If you want to run this project locally or contribute to its development, follow
 **1.** Clone the repository to your local machine:
 
 ```bash
-  git clone https://github.com/mostafa-abbasi/KeyboardTester.git
+  git clone https://github.com/mhakantekbaskaymet/hmdevicetest.git
 ```
 
 **2.** Open the index.html file in your web browser.

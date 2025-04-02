@@ -114,16 +114,17 @@ function updateLayout() {
   // Update output text based on slider position
   switch (sliderValue) {
     case 1:
-      output.textContent = 'Full';
-      changeToFullSize();
+      output.textContent = '75%';
+      changeTo75();
+
       break;
     case 2:
       output.textContent = 'TKL';
       changeToTKL();
       break;
     case 3:
-      output.textContent = '75%';
-      changeTo75();
+      output.textContent = 'Full';
+      changeToFullSize();
       break;
     default:
       break;
